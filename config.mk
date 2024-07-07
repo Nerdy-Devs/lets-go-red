@@ -16,9 +16,9 @@ GAME_CODE   := BPR
 BUILD_NAME  := firered
 else
 ifeq ($(GAME_VERSION),LEAFGREEN)
-TITLE       := POKEMON LEAF
+TITLE       := POKEMON FIRE
 GAME_CODE   := BPG
-BUILD_NAME  := leafgreen
+BUILD_NAME  := firered
 else
 $(error unknown version $(GAME_VERSION))
 endif
