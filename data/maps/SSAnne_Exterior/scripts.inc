@@ -1,4 +1,5 @@
 .set LOCALID_SS_ANNE, 1
+.set LOCALID_MEW_POKEBALL, 3
 
 SSAnne_Exterior_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, SSAnne_Exterior_OnTransition
@@ -32,18 +33,52 @@ SSAnne_Exterior_ExitSSAnne::
 	releaseall
 	end
 
-CeladonCity_Condominiums_RoofRoom_EventScript_GetMewParty::
-	removeobject LOCALID_EEVEE_POKEBALL
+SSAnne_Exterior_EventScript_MewBall::
+	lock
+	faceplayer
+	setvar VAR_TEMP_1, SPECIES_MEW
+	givemon SPECIES_MEW, 25
+	goto_if_eq VAR_RESULT, 0, SSAnne_Exterior_EventScript_GetMewParty
+	goto_if_eq VAR_RESULT, 1, SSAnne_Exterior_EventScript_GetMewPC
+	goto_if_eq VAR_RESULT, 2, EventScript_NoMoreRoomForPokemon
+	release
+	end
+
+SSAnne_Exterior_EventScript_GetMewParty::
+	removeobject LOCALID_MEW_POKEBALL
 	playfanfare MUS_LEVEL_UP
 	message SSAnne_EXterior_Get_Mew_Text
 	waitmessage
 	waitfanfare
 	bufferspeciesname STR_VAR_1, SPECIES_MEW
 	msgbox Text_GiveNicknameToThisMon, MSGBOX_YESNO
-	goto CeladonCity_Condominiums_RoofRoom_EventScript_SetGotEevee
+	goto_if_eq VAR_RESULT, NO, SSAnne_Exterior_EventScript_SetGotMew
 	call EventScript_GetGiftMonPartySlot
 	call EventScript_ChangePokemonNickname
-	goto CeladonCity_Condominiums_RoofRoom_EventScript_SetGotEevee
+	goto SSAnne_Exterior_EventScript_SetGotMew
+	end
+
+SSAnne_Exterior_EventScript_GetMewPC::
+	removeobject LOCALID_MEW_POKEBALL
+	playfanfare MUS_LEVEL_UP
+	message SSAnne_EXterior_Get_Mew_Text
+	waitmessage
+	waitfanfare
+	bufferspeciesname STR_VAR_1, SPECIES_MEW
+	msgbox Text_GiveNicknameToThisMon, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, SSAnne_Exterior_EventScript_TransferMewToPC
+	call EventScript_NameReceivedBoxMon
+	goto SSAnne_Exterior_EventScript_TransferMewToPC
+	end
+
+SSAnne_Exterior_EventScript_TransferMewToPC::
+	call EventScript_TransferredToPC
+	goto SSAnne_Exterior_EventScript_SetGotMew
+	end
+
+SSAnne_Exterior_EventScript_SetGotMew::
+	setflag FLAG_GOT_MEW
+	release
 	end
 
 SSAnne_Exterior_WalkDown::
