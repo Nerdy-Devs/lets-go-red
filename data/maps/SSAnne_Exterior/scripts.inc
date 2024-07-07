@@ -32,6 +32,20 @@ SSAnne_Exterior_ExitSSAnne::
 	releaseall
 	end
 
+CeladonCity_Condominiums_RoofRoom_EventScript_GetMewParty::
+	removeobject LOCALID_EEVEE_POKEBALL
+	playfanfare MUS_LEVEL_UP
+	message SSAnne_EXterior_Get_Mew_Text
+	waitmessage
+	waitfanfare
+	bufferspeciesname STR_VAR_1, SPECIES_MEW
+	msgbox Text_GiveNicknameToThisMon, MSGBOX_YESNO
+	goto CeladonCity_Condominiums_RoofRoom_EventScript_SetGotEevee
+	call EventScript_GetGiftMonPartySlot
+	call EventScript_ChangePokemonNickname
+	goto CeladonCity_Condominiums_RoofRoom_EventScript_SetGotEevee
+	end
+
 SSAnne_Exterior_WalkDown::
 	applymovement OBJ_EVENT_ID_PLAYER, SSAnne_Exterior_Movement_WalkDown
 	waitmovement 0
